@@ -5,9 +5,8 @@ const map = generateCells(20);
 const { app, container, graphics, spriteMap } = initialize<keyof typeof CONSTANTS.spriteImportDefinitions>(CONSTANTS.spriteImportDefinitions, map.length);
 
 map.forEach((row, x) => {
-  row.forEach((cell, y) => {
+  row.forEach((_cell, y) => {
     // draw outer boundary, y = 0 || y = map.length - 1 || x = 0 || x = map.length - 1
-
     if (y === 0 || y === map.length - 1 || x === 0 || x === map.length - 1) {
       map[x][y] = 1;
     }
@@ -18,7 +17,7 @@ const draw = () => {
   app.renderer.clear(); // Clear the renderer
   container.removeChildren(); // Clear the container
 
-  const tileSize = calculateTileSize(app, map.length);
+  const tileSize = calculateTileSize(map.length);
 
   for (let x = 0; x < map.length; x++) {
     for (let y = 0; y < map.length; y++) {
