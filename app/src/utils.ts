@@ -73,7 +73,21 @@ export const generateSpriteMap = <T extends string>(spriteImportDefinitions: Rec
     spriteMap[key] = sprite;
   }
 
-  return spriteMap as Record<T, PIXI.Sprite>;
+  return spriteMap as (Record<T, PIXI.Sprite> & Record<string, PIXI.Sprite>);
+}
+
+export const generateCells = (size: number) => {
+  const cells: number[][] = [];
+
+  for (let x = 0; x < size; x++) {
+    cells[x] = [];
+
+    for (let y = 0; y < size; y++) {
+      cells[x][y] = 0;
+    }
+  }
+
+  return cells;
 }
 
 export const animate = (app: PIXI.Application<HTMLCanvasElement>, draw: () => void) => {
