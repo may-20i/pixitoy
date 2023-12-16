@@ -1,6 +1,6 @@
 on: [push]
 jobs:
-  Deploy:
+  Build:
     permissions:
       id-token: write
       actions: read
@@ -22,6 +22,14 @@ jobs:
           name: build
           path: ${{ github.workspace }}/app/dist
           if-no-files-found: error
-      - uses: actions/deploy-pages@v3.0.1
+  Deploy:
+    permissions:
+      id-token: write
+      actions: read
+    needs: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy artifact to pages.
+        uses: actions/deploy-pages@v3.0.1
         with:
           artifact_name: build
