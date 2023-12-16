@@ -61,7 +61,7 @@ export type SpriteImportDefinition = {
     anchor?: Partial<{x: number, y: number}>,
 }
 
-export const generateSpriteMap = <T>(spriteImportDefinitions: Record<string, SpriteImportDefinition>, prefix = "assets/") => {
+export const generateSpriteMap = <T extends string>(spriteImportDefinitions: Record<string, SpriteImportDefinition>, prefix = "assets/") => {
     const spriteMap: Record<string, PIXI.Sprite> = {};
 
     const keys = Object.keys(spriteImportDefinitions);
@@ -73,7 +73,7 @@ export const generateSpriteMap = <T>(spriteImportDefinitions: Record<string, Spr
         spriteMap[key] = sprite;
     }
 
-    return spriteMap as T;
+    return spriteMap as Record<T, PIXI.Sprite>;
 }
 
 export const animate = (app: PIXI.Application<HTMLCanvasElement>, draw: () => void) => {
