@@ -24,4 +24,4 @@ jobs:
           if-no-files-found: error
       - uses: actions/deploy-pages@v3.0.1
         with:
-          artifact-name: build
+          artifact_name: build
