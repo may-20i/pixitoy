@@ -3,6 +3,8 @@ jobs:
   Deploy:
     permissions:
       id-token: write
+      contents: read
+      actactions: read
     runs-on: ubuntu-latest
     steps:
       - name: Setup Bun
@@ -22,3 +24,6 @@ jobs:
           name: build-output
           # Path of the directory containing the static assets.
           path: ${{ github.workspace }}/app/dist
+      - uses: actions/deploy-pages@v3.0.1
+        with:
+          artifact_name: build-output
