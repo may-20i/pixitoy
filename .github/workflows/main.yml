@@ -18,7 +18,7 @@ jobs:
         working-directory: ${{ github.workspace }}/app
         run: bun run build
       - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-pages-artifact@v2
         with:
           path: ${{ github.workspace }}/app/dist
           if-no-files-found: error
@@ -27,4 +27,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy artifact to pages.
-        uses: actions/deploy-pages@v3
+        uses: actions/deploy-pages@v3.0.1
