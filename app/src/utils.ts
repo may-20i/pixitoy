@@ -26,23 +26,29 @@ export const initialize = <T extends string>(spriteImportDefinitions: Record<str
 
   const spriteMap = generateSpriteMap<T>(spriteImportDefinitions);
 
-  const tileSize = getMaxWindowSize() / gridSize;
-
   window.addEventListener("resize", () => {
-    handleSizeChange(app, spriteMap, tileSize);
+    handleSizeChange(app, spriteMap, gridSize);
   })
 
-  handleSizeChange(app, spriteMap, tileSize);
+  handleSizeChange(app, spriteMap, gridSize);
 
-  return { app, graphics, container, spriteMap, tileSize };
+  return { app, graphics, container, spriteMap };
 }
 
-export const handleSizeChange = (app: PIXI.Application<HTMLCanvasElement>, spriteMap: Record<string, PIXI.Sprite>, tileSize: number) => {
-  console.log("handleSizeChange");
+export const calculateTileSize = (app: PIXI.Application<HTMLCanvasElement>, gridSize: number) => {
+  const size = getMaxWindowSize();
+
+  const tileSize = size / gridSize;
+
+  return tileSize;
+}
+
+export const handleSizeChange = (app: PIXI.Application<HTMLCanvasElement>, spriteMap: Record<string, PIXI.Sprite>, gridSize: number) => {
   const size = getMaxWindowSize();
 
   const width = size
   const height = size
+  const tileSize = calculateTileSize(app, gridSize);
 
   app.renderer.resize(width, height);
 
@@ -51,6 +57,8 @@ export const handleSizeChange = (app: PIXI.Application<HTMLCanvasElement>, sprit
 
     sprite.width = tileSize;
     sprite.height = tileSize;
+
+    spriteMap[key] = sprite;
   }
 }
 
