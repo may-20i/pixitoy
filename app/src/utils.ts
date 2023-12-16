@@ -35,7 +35,7 @@ export const initialize = <T extends string>(spriteImportDefinitions: Record<str
   return { app, graphics, container, spriteMap };
 }
 
-export const calculateTileSize = (app: PIXI.Application<HTMLCanvasElement>, gridSize: number) => {
+export const calculateTileSize = (gridSize: number) => {
   const size = getMaxWindowSize();
 
   const tileSize = size / gridSize;
@@ -48,7 +48,7 @@ export const handleSizeChange = (app: PIXI.Application<HTMLCanvasElement>, sprit
 
   const width = size
   const height = size
-  const tileSize = calculateTileSize(app, gridSize);
+  const tileSize = calculateTileSize(gridSize);
 
   app.renderer.resize(width, height);
 
