@@ -1,9 +1,10 @@
 on: [push]
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 jobs:
   Build:
-    permissions:
-      id-token: write
-      actions: read
     runs-on: ubuntu-latest
     steps:
       - name: Setup Bun
@@ -22,9 +23,6 @@ jobs:
           path: ${{ github.workspace }}/app/dist
           if-no-files-found: error
   Deploy:
-    permissions:
-      id-token: write
-      actions: read
     needs: Build
     runs-on: ubuntu-latest
     steps:
