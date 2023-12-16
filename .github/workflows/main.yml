@@ -7,18 +7,20 @@ jobs:
         uses: oven-sh/setup-bun@v1.1.1
       - name: Check out repository code
         uses: actions/checkout@v4
-      - name: Move to the repository code directory
-        run: cd $GITHUB_WORKSPACE && cd app
       - name: Install dependencies
+        working-directory: ${{ github.workspace }}/app
         run: bun
       - name: Build
+        working-directory: ${{ github.workspace }}/app
         run: bun run build
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4.0.0
         with:
           name: build-output
+          working-directory: ${{ github.workspace }}/app
           path: dist
           if-no-files-found: error
       - uses: actions/deploy-pages@v3.0.1
         with:
+          working-directory: ${{ github.workspace }}/app
           artifact_name: build-output
