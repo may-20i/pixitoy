@@ -1,4 +1,4 @@
 import {defineConfig} from 'vite'
 export default defineConfig({
-  base: "/pixitoy/"
+  base: process.env.BUILD_ENV === "PAGES" ? "/pixitoy/" : "/",
 })

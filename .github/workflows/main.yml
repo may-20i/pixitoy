@@ -16,6 +16,8 @@ jobs:
         run: bun install
       - name: Build
         working-directory: ${{ github.workspace }}/app
+        env:
+          BUILD_ENV: PAGES
         run: bun run build
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v2
