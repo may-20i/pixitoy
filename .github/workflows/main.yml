@@ -17,11 +17,10 @@ jobs:
       - name: Build
         working-directory: ${{ github.workspace }}/app
         run: bun run build
-      - name: Upload a Build Artifact
+      - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v2
         with:
           path: ${{ github.workspace }}/app/dist
-          if-no-files-found: error
   Deploy:
     needs: Build
     runs-on: ubuntu-latest
