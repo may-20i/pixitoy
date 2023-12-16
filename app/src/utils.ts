@@ -6,7 +6,7 @@ export const getMaxWindowSize = () => {
   return Math.min(width, height);
 }
 
-export const initialize = () => {
+export const initialize = <T extends string>(spriteImportDefinitions: Record<string, SpriteImportDefinition>, gridSize: number) => {
   const app = new PIXI.Application<HTMLCanvasElement>({
     width: getMaxWindowSize(),
     height: getMaxWindowSize(),
@@ -24,18 +24,34 @@ export const initialize = () => {
   const graphics = new PIXI.Graphics();
   container.addChild(graphics);
 
+  const spriteMap = generateSpriteMap<T>(spriteImportDefinitions);
+
+  const tileSize = getMaxWindowSize() / gridSize;
+
   window.addEventListener("resize", () => {
-    handleSizeChange(app);
+    handleSizeChange(app, spriteMap, tileSize);
   })
 
-  return { app, graphics, container };
+  handleSizeChange(app, spriteMap, tileSize);
+
+  return { app, graphics, container, spriteMap, tileSize };
 }
 
-export const handleSizeChange = (app: PIXI.Application<HTMLCanvasElement>) => {
-  const width = getMaxWindowSize();
-  const height = getMaxWindowSize();
+export const handleSizeChange = (app: PIXI.Application<HTMLCanvasElement>, spriteMap: Record<string, PIXI.Sprite>, tileSize: number) => {
+  console.log("handleSizeChange");
+  const size = getMaxWindowSize();
+
+  const width = size
+  const height = size
 
   app.renderer.resize(width, height);
+
+  for (const key of Object.keys(spriteMap)) {
+    const sprite = spriteMap[key];
+
+    sprite.width = tileSize;
+    sprite.height = tileSize;
+  }
 }
 
 export const loadSprite = (path: string, anchor?: Partial<{x: number, y: number}>, prefix = "assets/") => {
@@ -61,7 +77,7 @@ export type SpriteImportDefinition = {
   anchor?: Partial<{x: number, y: number}>,
 }
 
-export const generateSpriteMap = <T extends string>(spriteImportDefinitions: Record<string, SpriteImportDefinition>, prefix = "assets/") => {
+const generateSpriteMap = <T extends string>(spriteImportDefinitions: Record<string, SpriteImportDefinition>, prefix = "assets/") => {
   const spriteMap: Record<string, PIXI.Sprite> = {};
 
   const keys = Object.keys(spriteImportDefinitions);
@@ -74,6 +90,16 @@ export const generateSpriteMap = <T extends string>(spriteImportDefinitions: Rec
   }
 
   return spriteMap as (Record<T, PIXI.Sprite> & Record<string, PIXI.Sprite>);
+}
+
+export const createSprite = (sprite: PIXI.Sprite) => {
+  const newSprite = new PIXI.Sprite(sprite.texture);
+
+  newSprite.anchor.set(sprite.anchor.x, sprite.anchor.y);
+  newSprite.width = sprite.width;
+  newSprite.height = sprite.height;
+
+  return newSprite;
 }
 
 export const generateCells = (size: number) => {
