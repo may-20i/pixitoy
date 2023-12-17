@@ -1,17 +1,18 @@
 import { animate, calculateTileSize, createSprite, generateCells, getMaxWindowSize, initialize } from "./utils"
 import { CONSTANTS } from "./constants"
+import { generateMazeDfs } from "./maze";
 
-const map = generateCells(20);
+const map = generateCells(10, 0);
 const { app, container, graphics, spriteMap } = initialize<keyof typeof CONSTANTS.spriteImportDefinitions>(CONSTANTS.spriteImportDefinitions, map.length);
 
-map.forEach((row, x) => {
-  row.forEach((_cell, y) => {
-    // draw outer boundary, y = 0 || y = map.length - 1 || x = 0 || x = map.length - 1
-    if (y === 0 || y === map.length - 1 || x === 0 || x === map.length - 1) {
-      map[x][y] = 1;
-    }
-  })
-})
+const randomCoordinate = {
+  x: Math.floor(Math.random() * map.length),
+  y: Math.random() > 0.5 ? 0 : map.length - 1
+}
+
+map[randomCoordinate.x][randomCoordinate.y] = 1;
+
+generateMazeDfs(map, {x: 0, y: 0})
 
 const draw = () => {
   app.renderer.clear(); // Clear the renderer
@@ -38,4 +39,4 @@ const draw = () => {
   app.renderer.render(container);
 };
 
-animate(app, draw);
+animate(app, draw)
