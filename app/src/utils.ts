@@ -110,18 +110,28 @@ export const createSprite = (sprite: PIXI.Sprite) => {
   return newSprite;
 }
 
-export const generateCells = (size: number) => {
+export const generateCells = (size: number, initialValue?: number) => {
   const cells: number[][] = [];
 
   for (let x = 0; x < size; x++) {
     cells[x] = [];
 
     for (let y = 0; y < size; y++) {
-      cells[x][y] = 0;
+      cells[x][y] = initialValue ?? 0;
     }
   }
 
   return cells;
+}
+
+// https://stackoverflow.com/a/12646864
+export const shuffleArray = <T>(array: Array<T>) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+
+  return array
 }
 
 export const animate = (app: PIXI.Application<HTMLCanvasElement>, draw: () => void) => {
